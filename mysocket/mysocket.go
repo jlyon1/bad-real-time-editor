@@ -3,7 +3,7 @@ package mysocket
 import (
 	"log"
 	"net/http"
-
+	"main/document"
 	"github.com/gorilla/websocket"
 )
 
@@ -21,9 +21,10 @@ func addClient(c *websocket.Conn){
 	defer c.Close()
 
 	clients = append(clients,c);
-
+	c.WriteMessage(1, []byte("Connected"))
+	var d = document.New("asdf");
+	log.Print(d.GetDocumentValue());
 	for {
-
 		_, message, err := c.ReadMessage()
 		log.Println(string(message));
 		if err != nil {
