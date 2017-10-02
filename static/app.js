@@ -5,7 +5,7 @@ var App = {
     if (App.ws) {
         return false;
     }
-    App.ws = new WebSocket("ws://localhost/ws");
+    App.ws = new WebSocket("ws://jlyon.org/ws");
     App.ws.onopen = function(evt) {
       $(".editor").val("websocket open");
     }
