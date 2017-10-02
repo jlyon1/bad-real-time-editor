@@ -5,7 +5,7 @@ var App = {
     if (App.ws) {
         return false;
     }
-    App.ws = new WebSocket("ws://127.0.0.1:8080/ws");
+    App.ws = new WebSocket("wss://jlyon.org/gopad/ws");
     App.ws.onopen = function(evt) {
       $(".editor").val("websocket open");
     }
