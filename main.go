@@ -18,8 +18,6 @@ func main() {
   fs := http.FileServer(http.Dir("static"))
 
   http.Handle("/", fs)
-	http.Handle("/app.js", fs)
-	http.Handle("/styles.css", fs)
 
 
 	http.HandleFunc("/test", test)
