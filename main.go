@@ -15,7 +15,7 @@ func test(w http.ResponseWriter, r *http.Request){
 func main() {
 
 	mysocket.Init();
-  fs := http.FileServer(http.StripPrefix("/testgopad/",http.Dir("./static/")))
+  fs := http.FileServer(http.Dir("./static/"))
 
   http.Handle("/", fs)
 	http.HandleFunc("/test", test)
