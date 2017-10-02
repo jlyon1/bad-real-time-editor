@@ -5,7 +5,7 @@ var App = {
     if (App.ws) {
         return false;
     }
-    App.ws = new WebSocket("wss://jlyon.org/ws");
+    App.ws = new WebSocket("ws://127.0.0.1:8080/ws");
     App.ws.onopen = function(evt) {
       $(".editor").val("websocket open");
     }
@@ -20,7 +20,7 @@ var App = {
     }
     $(".editor").keyup(function(){
       App.count += 1;
-      if (App.count == 10){
+      if (App.count == 2){
         App.count = 0;
         App.ws.send($(".editor").val());
       }
@@ -33,11 +33,5 @@ $(document).ready(function(){
   App.openWebsocket();
   var val = $(".editor").val();
   var oldVal = "";
-  setInterval(function(){
-    val = $(".editor").val();
-    if (val != oldVal){
-      App.ws.send($(".editor").val());
-      oldVal = val;
-    }
-  }, 1000);
+
 });

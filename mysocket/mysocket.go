@@ -19,14 +19,16 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func sendUpdate(){
+func sendUpdate(fromClient *websocket.Conn){
 	for _,client := range(clients){
-		err := client.WriteMessage(1, []byte(d.GetDocumentValue()))
-		if err != nil {
-			log.Println("asdf");
-			log.Println(err)
-			continue;
-		}
+		if fromClient.RemoteAddr() != client.RemoteAddr(){
+			log.Println("should alkfjasf");
+			err := client.WriteMessage(1, []byte(d.GetDocumentValue()))
+			if err != nil {
+				log.Println(err)
+				continue;
+				}
+			}
 	}
 }
 
@@ -45,7 +47,9 @@ func addClient(c *websocket.Conn){
 	for {
 		_, message, err := c.ReadMessage()
 		d.OverwriteText(string(message));
-		sendUpdate();
+		if(string(message) != ""){
+			sendUpdate(c);
+		}
 		if err != nil {
 			log.Println("read:", err)
 			break
