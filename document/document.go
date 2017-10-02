@@ -1,6 +1,7 @@
 package document
 
 import (
+  "log"
 
 )
 type Document struct {
@@ -8,8 +9,13 @@ type Document struct {
 }
 
 
-func (document Document) GetDocumentValue() (string){
-  return document.docValue;
+func (document *Document) GetDocumentValue() (string){
+  return document.docValue
+}
+
+func (document *Document) OverwriteText(val string){
+  document.docValue = val
+  log.Println(val);
 }
 
 func New(val string) (Document){
