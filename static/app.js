@@ -25,10 +25,19 @@ var App = {
         App.ws.send($(".editor").val());
       }
     });
+
   }
 }
 
 $(document).ready(function(){
   App.openWebsocket();
-  setInterval(function(){App.Count += 1 }, 100);
+  var val = $(".editor").val();
+  var oldVal = "";
+  setInterval(function(){
+    val = $(".editor").val();
+    if (val != oldVal){
+      App.ws.send($(".editor").val());
+      oldVal = val;
+    }
+  }, 1000);
 });

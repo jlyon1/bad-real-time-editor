@@ -23,17 +23,24 @@ func sendUpdate(){
 	for _,client := range(clients){
 		err := client.WriteMessage(1, []byte(d.GetDocumentValue()))
 		if err != nil {
+			log.Println("asdf");
 			log.Println(err)
-			break;
+			continue;
 		}
 	}
 }
 
-func addClient(c *websocket.Conn){
-	defer c.Close()
+func closeClient(c *websocket.Conn, pos int){
+	log.Println("close requested");
+	c.Close()
+}
 
+func addClient(c *websocket.Conn){
 	clients = append(clients,c);
-	c.WriteMessage(1, []byte("Connected"))
+	pos := len(clients)
+	defer closeClient(c,pos);
+
+	c.WriteMessage(1, []byte(d.GetDocumentValue()))
 
 	for {
 		_, message, err := c.ReadMessage()
