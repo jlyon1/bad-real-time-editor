@@ -8,6 +8,9 @@ import (
 )
 
 var addr = flag.String("addr", "localhost:8080", "http service address")
+func test(w http.ResponseWriter, r *http.Request){
+	log.Printf("asdf");
+}
 
 func main() {
 
@@ -15,6 +18,8 @@ func main() {
   fs := http.FileServer(http.StripPrefix("/testgopad/",http.Dir("./static/")))
 
   http.Handle("/", fs)
+	http.HandleFunc("/test", test)
+
 	http.HandleFunc("/ws", mysocket.ReceiveClient)
 
 	log.Fatal(http.ListenAndServe(*addr, nil))
