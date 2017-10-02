@@ -17,7 +17,7 @@ func main() {
 	mysocket.Init();
   fs := http.FileServer(http.Dir("./static/"))
 
-  http.Handle("/", fs)
+  http.Handle("/", http.StripPrefix("/testgopad/", fs))
 	http.HandleFunc("/test", test)
 
 	http.HandleFunc("/ws", mysocket.ReceiveClient)
