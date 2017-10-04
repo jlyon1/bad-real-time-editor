@@ -21,15 +21,13 @@ var upgrader = websocket.Upgrader{
 
 func sendUpdate(fromClient *websocket.Conn){
 	for _,client := range(clients){
-		if fromClient.RemoteAddr() != client.RemoteAddr(){
-			log.Println("should alkfjasf");
-			err := client.WriteMessage(1, []byte(d.GetDocumentValue()))
-			if err != nil {
-				log.Println(err)
-				continue;
-				}
-			}
+		err := client.WriteMessage(1, []byte(d.GetDocumentValue()))
+		if err != nil {
+			log.Println(err)
+			continue;
+		}
 	}
+
 }
 
 func closeClient(c *websocket.Conn, pos int){
