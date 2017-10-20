@@ -20,9 +20,11 @@ var upgrader = websocket.Upgrader{
 }
 
 func sendUpdate(fromClient *websocket.Conn){
-	for _,client := range(clients){
+	for i,client := range(clients){
 		err := client.WriteMessage(1, []byte(d.GetDocumentValue()))
+
 		if err != nil {
+			clients = append(clients[:i], clients[i+1:]...)
 			log.Println(err)
 			continue;
 		}
@@ -30,22 +32,15 @@ func sendUpdate(fromClient *websocket.Conn){
 
 }
 
-func closeClient(c *websocket.Conn, pos int){
-	log.Println("close requested");
-	c.Close()
-}
-
-func addClient(c *websocket.Conn){
-	clients = append(clients,c);
-	pos := len(clients)
-	defer closeClient(c,pos);
+func processMessages(c *websocket.Conn){
+	defer closeClient(c);
 
 	c.WriteMessage(1, []byte(d.GetDocumentValue()))
 
 	for {
-		_, message, err := c.ReadMessage()
-		d.OverwriteText(string(message));
-		if(string(message) != ""){
+		t, mess, err := c.ReadMessage()
+		if(t != -1){
+			d.OverwriteText(string(mess));
 			sendUpdate(c);
 		}
 		if err != nil {
@@ -53,6 +48,16 @@ func addClient(c *websocket.Conn){
 			break
 		}
 	}
+}
+
+func closeClient(c *websocket.Conn){
+	log.Println("close requested");
+	c.Close()
+}
+
+func addClient(c *websocket.Conn){
+	clients = append(clients,c);
+	go processMessages(c);
 }
 
 func ReceiveClient(w http.ResponseWriter, r *http.Request) {

@@ -1,26 +1,38 @@
 package document
 
 import (
-  "log"
-
+	"log"
+	"time"
 )
+
+const (
+	ADD = 1
+	DEL = 0
+)
+
 type Document struct {
-  docValue string
+	docValue string
 }
 
-
-func (document *Document) GetDocumentValue() (string){
-  return document.docValue
+type Delta struct {
+	Updatetime time.Time
+	Operation  int
+  StartPosition   int
+	Change     string
 }
 
-func (document *Document) OverwriteText(val string){
-  document.docValue = val
-  log.Println(val);
+func (document *Document) GetDocumentValue() string {
+	return document.docValue
 }
 
-func New(val string) (Document){
-  d := Document{
-    docValue: "asdf",
-  }
-  return d
+func (document *Document) OverwriteText(val string) {
+	document.docValue = val
+	log.Println(val)
+}
+
+func New(val string) Document {
+	d := Document{
+		docValue: "asdf",
+	}
+	return d
 }
